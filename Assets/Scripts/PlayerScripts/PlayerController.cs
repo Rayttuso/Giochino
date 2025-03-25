@@ -1,42 +1,26 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 0.005f;
+    Rigidbody2D _rb;
+    float speed = 5f;
+    float inputHorizontal;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        _rb=gameObject.GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("d")){
-            float translation = Input.GetAxis("Horizontal")*speed;
-             transform.Translate(translation, 0, 0);
+        inputHorizontal=Input.GetAxisRaw("Horizontal");
 
+        if(inputHorizontal != 0){
+            _rb.AddForce(new Vector2(inputHorizontal * speed, 0f));
         }
-        
-        else if(Input.GetKey("a")){
-            float translation = Input.GetAxis("Horizontal")*speed;
-             transform.Translate(translation, 0, 0);
-
-        }
-
-        else if(Input.GetKey("w")){
-            float translation = Input.GetAxis("Vertical")*speed;
-             transform.Translate(0, translation, 0);
-
-        }
-
-        else if(Input.GetKey("s")){
-            float translation = Input.GetAxis("Vertical")*speed;
-             transform.Translate(0, translation, 0);
-
-        }
-
     }
 }
