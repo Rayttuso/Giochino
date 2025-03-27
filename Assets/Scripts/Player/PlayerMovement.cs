@@ -25,8 +25,12 @@ public class PlayerMoviment : MonoBehaviour
     //collision check var
     private RaycastHit2D _groundHit;
     private RaycastHit2D _headHit;
+    private RaycastHit2D _wallHit;
+    private RaycastHit2D _lastWallHit;
+    
     private bool _isGrounded;
     private bool _bumpedHead;
+    private bool _isTouchingWall;
 
     //Jump Vars
     public float VerticalVelocity{get; private set; }
@@ -48,6 +52,32 @@ public class PlayerMoviment : MonoBehaviour
 
     //coyote time
     private float _coyoteTimer;
+    // wall slide
+    private bool _isWallSliding;
+    private bool _isWallSlideFalling;
+    // wall jump
+    private bool _useWallMoveStats;
+    private bool _isWallJumping;
+    private float _wallJumpTime;
+    private bool _isWallJumpFastFalling;
+    private bool  _isWallJumpFalling;
+    private float _wallJumpFastFallTime;
+    private float _wallJumpFastFallReleaseSpeed;
+
+    private float _wallJumpPostBuffertimer; 
+    private float _wallJumpApexPoint;
+    private float _timePastWalljumpApexThreshold;
+    private bool _isPastWallJumpApexThreshold;  
+
+    private bool _isDashing;
+    private bool _isAirDashing;
+    private float _dashTimer;
+    private float _dashOnGroundTimer;
+     private int _numberOfDashesUsed;
+    private Vector2 _dashDirection;
+    private bool _IsDashFastFalling;
+    private float _dashFastFallTime;
+    private float _dashFastFaulReLeaseSpeedi;
 
 
     private void Awake()
@@ -60,6 +90,7 @@ public class PlayerMoviment : MonoBehaviour
     {
         CountTimers();
         JumpChecks();
+        LandCheck();
     }
 
     void FixedUpdate()
@@ -67,6 +98,7 @@ public class PlayerMoviment : MonoBehaviour
         Debug.Log(InputManager.Moviment);
         CollisionChecks();
         Jump();
+        Fall();
 
         if(_isGrounded)
         {
@@ -167,6 +199,40 @@ public class PlayerMoviment : MonoBehaviour
     }
     #endregion
 
+    #region Land/Fall
+
+
+    private void LandCheck()
+    {
+        //LANDED
+        if((_isJumping || _isFalling) && _isGrounded && VerticalVelocity <= 0f )
+        {   
+            _isJumping = false;
+            _isFalling = false;
+            _isFastFalling = false;
+            _fastFallTime = 0f;
+            _isPastApexThreshold = false;
+            _numberOfJumpsUsed = 0;
+
+            VerticalVelocity = Physics2D.gravity.y;
+        }
+    } 
+    private void Fall()
+    {
+        //NORMAL GRAVITY WHILE FALLING
+        if(!_isGrounded && !_isJumping)
+        {
+            if(!_isFalling)
+            {
+                _isFalling = true;
+            }
+
+            VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
+        }
+    }
+
+    #endregion
+
     #region Jump
 
     private void JumpChecks()
@@ -228,18 +294,6 @@ public class PlayerMoviment : MonoBehaviour
             _isFastFalling = false;
         }
 
-        //LANDED
-        if((_isJumping || _isFalling) && _isGrounded && VerticalVelocity <= 0f )
-        {   
-            _isJumping = false;
-            _isFalling = false;
-            _isFastFalling = false;
-            _fastFallTime = 0f;
-            _isPastApexThreshold = false;
-            _numberOfJumpsUsed = 0;
-
-            VerticalVelocity = Physics2D.gravity.y;
-        }
 
     }
 
@@ -335,16 +389,7 @@ public class PlayerMoviment : MonoBehaviour
             _fastFallTime += Time.fixedDeltaTime;
         }
 
-        //NORMAL GRAVITY WHILE FALLING
-        if(!_isGrounded && !_isJumping)
-        {
-            if(!_isFalling)
-            {
-                _isFalling = true;
-            }
-
-            VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
-        }
+        
 
         //CLAMP FALL SPEED
         VerticalVelocity = Mathf.Clamp(VerticalVelocity, -MoveStats.MaxFallSpeed, 50f);
