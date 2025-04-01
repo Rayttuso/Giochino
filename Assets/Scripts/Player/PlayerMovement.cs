@@ -64,7 +64,7 @@ public class PlayerMoviment : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log(InputManager.Moviment);
+        //Debug.Log(InputManager.Moviment);
         CollisionChecks();
         Jump();
 
