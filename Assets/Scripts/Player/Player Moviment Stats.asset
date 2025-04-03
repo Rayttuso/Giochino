@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c96b2c8c242ba40a3ec2b18b7b0f81, type: 3}
   m_Name: Player Moviment Stats
   m_EditorClassIdentifier: 
-  MaxWalkSpeed: 12.5
-  GroundAcceleration: 7.7
-  GroundDecelaration: 20
-  AirAcceleration: 15.2
-  AirDecelaration: 5
+  MaxWalkSpeed: 13
+  GroundAcceleration: 13
+  GroundDecelaration: 13
+  AirAcceleration: 13
+  AirDecelaration: 13
   MaxRunSpeed: 34
   GroundLayer:
     serializedVersion: 2
@@ -24,10 +24,10 @@ MonoBehaviour:
   GroundDetectionRayLenght: 0.02
   HeadDetectionRayLength: 0.02
   HeadWidth: 0.75
-  JumpHeight: 10
-  JumpheightCompensationFactor: 1.1
+  JumpHeight: 8
+  JumpheightCompensationFactor: 1.0517
   TimeTillJumpApex: 1
-  GravityOnReleaseMultiplier: 5
+  GravityOnReleaseMultiplier: 3
   MaxFallSpeed: 40
   NumberOfJumpsAllowed: 1
   TimeForUpwardsCancel: 0.02

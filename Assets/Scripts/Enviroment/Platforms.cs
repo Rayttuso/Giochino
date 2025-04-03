@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 public class Platforms : MonoBehaviour{
     private bool isOnPlatform;
+    private float _timerDiscesa;
 
     void Update(){
         if(Input.GetKey(KeyCode.S) && isOnPlatform==true){
             transform.GetComponent<PlatformEffector2D>().rotationalOffset = 180;
+            _timerDiscesa = 1f;
         }
 
         else{
