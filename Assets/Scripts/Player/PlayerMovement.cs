@@ -19,7 +19,7 @@ public class PlayerMoviment : MonoBehaviour
 
     //moviment var
     //private Vector2 _moveVelocity;
-    private float _moveVelocityX;
+    public float HorizontalVelocity{get; private set;}
     private bool _isFacingRight;
 
     //collision check var
@@ -60,13 +60,14 @@ public class PlayerMoviment : MonoBehaviour
     {
         CountTimers();
         JumpChecks();
+        LandCheck();
     }
 
     void FixedUpdate()
     {
-        Debug.Log(InputManager.Moviment);
         CollisionChecks();
         Jump();
+        Fall();
 
         if(_isGrounded)
         {
@@ -75,9 +76,20 @@ public class PlayerMoviment : MonoBehaviour
         else{
             Move(MoveStats.AirAcceleration, MoveStats.AirDecelaration, InputManager.Moviment);
         }
+        ApplyVelocity();
     }
 
-    void OnDrawGizmos()
+    private void ApplyVelocity()
+    {
+        
+        //CLAMP FALL SPEED
+        VerticalVelocity = Mathf.Clamp(VerticalVelocity, -MoveStats.MaxFallSpeed, 50f);
+
+        //DA RIGUARDARE LINEARVELOCITY SOVRASCRIVE CAMMINATA
+        _rb.linearVelocity = new Vector2(HorizontalVelocity,VerticalVelocity);
+    } 
+
+    private void OnDrawGizmos()
     {
         if(MoveStats.ShowWalkJumpArc)
         {
@@ -94,50 +106,25 @@ public class PlayerMoviment : MonoBehaviour
 
     private void Move(float acceleration, float deceleration, Vector2 moveInput)
     {
-        //DA RIGUARDARE LINEARVELOCITY SOVRASCRIVE SALTO
-        // if(moveInput != Vector2.zero)
-        // {
-        //     TurnCheck(moveInput);
-
-        //     Vector2 targetVeocity = Vector2.zero;
-        //     if(InputManager.RunIsHeld)
-        //     {
-        //         targetVeocity = new Vector2(moveInput.x, 0f) * MoveStats.MaxRunSpeed;
-
-        //     }else
-        //     {
-        //         targetVeocity = new Vector2(moveInput.x, 0f) * MoveStats.MaxWalkSpeed;
-        //     }
-
-        //     _moveVelocity = Vector2.Lerp(_moveVelocity, targetVeocity, acceleration * Time.fixedDeltaTime);
-        //     _rb.linearVelocity = new Vector2(_moveVelocity.x, _moveVelocity.y);
-        // }
-        // else if(moveInput == Vector2.zero)
-        // {
-        //     _moveVelocity = Vector2.Lerp(_moveVelocity, Vector2.zero, deceleration * Time.fixedDeltaTime);
-        //     _rb.linearVelocity = new Vector2(_moveVelocity.x, _moveVelocity.y);
-        // }
-        if(moveInput != Vector2.zero)
+        if(Mathf.Abs(moveInput.x) >= MoveStats.MovementThreshold)
         {
             TurnCheck(moveInput);
 
-            Vector2 targetVelocity = Vector2.zero;
+            float targetVelocity = 0f;
             if(InputManager.RunIsHeld)
             {
-                targetVelocity = new Vector2(moveInput.x, 0f).normalized * MoveStats.MaxRunSpeed;
+                targetVelocity = moveInput.x * MoveStats.MaxRunSpeed;
 
             }else
             {
-                targetVelocity = new Vector2(moveInput.x, 0f).normalized * MoveStats.MaxWalkSpeed;
+                targetVelocity = moveInput.x * MoveStats.MaxWalkSpeed;
             }
 
-            _moveVelocityX = Mathf.Lerp(_moveVelocityX, targetVelocity.x, acceleration * Time.fixedDeltaTime);
-            _rb.linearVelocityX = _moveVelocityX;
+            HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
         }
-        else if(moveInput == Vector2.zero)
+        else if(Mathf.Abs(moveInput.x) < MoveStats.MovementThreshold)
         {
-            _moveVelocityX = Mathf.Lerp(_moveVelocityX, 0, deceleration * Time.fixedDeltaTime);
-            _rb.linearVelocityX = _moveVelocityX;
+            HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, 0, deceleration * Time.fixedDeltaTime);
         }
     }
 
@@ -165,6 +152,40 @@ public class PlayerMoviment : MonoBehaviour
             transform.Rotate(0f,-180f,0f);
         }
     }
+    #endregion
+
+    #region Land/Fall
+
+    private void LandCheck()
+    {
+        //LANDED
+        if((_isJumping || _isFalling) && _isGrounded && VerticalVelocity <= 0f )
+        {   
+            _isJumping = false;
+            _isFalling = false;
+            _isFastFalling = false;
+            _fastFallTime = 0f;
+            _isPastApexThreshold = false;
+            _numberOfJumpsUsed = 0;
+
+            VerticalVelocity = Physics2D.gravity.y;
+        }
+    }
+
+    private void Fall()
+    {
+        //NORMAL GRAVITY WHILE FALLING
+        if(!_isGrounded && !_isJumping)
+        {
+            if(!_isFalling)
+            {
+                _isFalling = true;
+            }
+
+            VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
+        }
+    }
+
     #endregion
 
     #region Jump
@@ -228,18 +249,7 @@ public class PlayerMoviment : MonoBehaviour
             _isFastFalling = false;
         }
 
-        //LANDED
-        if((_isJumping || _isFalling) && _isGrounded && VerticalVelocity <= 0f )
-        {   
-            _isJumping = false;
-            _isFalling = false;
-            _isFastFalling = false;
-            _fastFallTime = 0f;
-            _isPastApexThreshold = false;
-            _numberOfJumpsUsed = 0;
-
-            VerticalVelocity = Physics2D.gravity.y;
-        }
+        
 
     }
 
@@ -295,7 +305,7 @@ public class PlayerMoviment : MonoBehaviour
                 }
             
                 //GRAVITY ON ASCENDING BUT NOT PAST APEX THESHOLD
-                else
+                else if(!_isFastFalling)
                 {
                     VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
                     if(_isPastApexThreshold)
@@ -335,23 +345,8 @@ public class PlayerMoviment : MonoBehaviour
             _fastFallTime += Time.fixedDeltaTime;
         }
 
-        //NORMAL GRAVITY WHILE FALLING
-        if(!_isGrounded && !_isJumping)
-        {
-            if(!_isFalling)
-            {
-                _isFalling = true;
-            }
 
-            VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
-        }
 
-        //CLAMP FALL SPEED
-        VerticalVelocity = Mathf.Clamp(VerticalVelocity, -MoveStats.MaxFallSpeed, 50f);
-
-        //DA RIGUARDARE LINEARVELOCITY SOVRASCRIVE CAMMINATA
-        //_rb.linearVelocity = new Vector2(_rb.linearVelocity.x, VerticalVelocity);
-        _rb.linearVelocityY = VerticalVelocity;
     }
 
     #endregion
