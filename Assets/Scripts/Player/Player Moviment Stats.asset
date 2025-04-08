@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c96b2c8c242ba40a3ec2b18b7b0f81, type: 3}
   m_Name: Player Moviment Stats
   m_EditorClassIdentifier: 
+  MovementThreshold: 0.25
   MaxWalkSpeed: 13
   GroundAcceleration: 13
   GroundDecelaration: 13
@@ -35,8 +36,8 @@ MonoBehaviour:
   ApexHangTime: 0.01
   JumpBufferTime: 0.425
   JumpCoyoteTime: 0.059
-  DebugShowIsGroundedBox: 0
-  DebugShowHeadBumpBox: 0
+  DebugShowIsGroundedBox: 1
+  DebugShowHeadBumpBox: 1
   ShowWalkJumpArc: 1
   ShowRunJumpArc: 1
   StopOnCollision: 1
