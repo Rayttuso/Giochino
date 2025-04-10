@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Interactions\ChangeScenes.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovementStats.cs" />
+    <Compile Include="Assets\DontDestroyOnLoad.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Enviroment\Platforms.cs" />
     <Compile Include="Assets\Scripts\Input\InputManager.cs" />
