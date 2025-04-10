@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Platforms : MonoBehaviour{
-    public bool isOnPlatform;
-    public bool isFalling;
+    private bool isOnPlatform;
+    private bool isFalling;
 
     void Update(){
         
