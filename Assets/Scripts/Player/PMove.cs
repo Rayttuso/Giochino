@@ -1,30 +1,42 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
-    private float speed = 8f;
+    private float speed = 16f;
     private float jumpingPower = 16f;
     private bool isFacingRight = true;
+
+    private bool isOnGround;
+
+    Animator animator;
 
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
 
+    void Start()
+    {
+        animator= GetComponent<Animator>();
+    }
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (Input.GetKey(KeyCode.Space) && isOnGround==true)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+            animator.SetBool("Jumping", true);
+
         }
 
         if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
         }
-
+        
         Flip();
     }
 
@@ -47,5 +59,16 @@ public class PlayerMovement : MonoBehaviour
             localScale.x *= -1f;
             transform.localScale = localScale;
         }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision){
+        if(collision.gameObject.tag == "Ground"){
+            isOnGround=true;
+        }
+
+    }
+
+    private void OnCollisionExit2D(Collision2D collision){
+            isOnGround=false;
     }
 }

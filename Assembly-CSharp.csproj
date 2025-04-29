@@ -68,12 +68,9 @@
     <Compile Include="Assets\Scripts\Interactions\ChangeScenes.cs" />
     <Compile Include="Assets\Scripts\Death\ObstaclesController.cs" />
     <Compile Include="Assets\Scripts\Saves\DontDestroyOnLoad.cs" />
-    <Compile Include="Assets\Scripts\Player\PlayerMovementStats.cs" />
     <Compile Include="Assets\Scripts\Player\PMove.cs" />
-    <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Enviroment\Platforms.cs" />
     <Compile Include="Assets\Scripts\Death\Checkpoint.cs" />
-    <Compile Include="Assets\Scripts\Input\InputManager.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerController.cs" />
   </ItemGroup>
   <ItemGroup>
