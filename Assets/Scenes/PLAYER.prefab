@@ -131,7 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveStats: {fileID: 11400000, guid: 567812a896d55584bbdc56b79643643e, type: 2}
   _feetColl: {fileID: 2959193296145092141}
-  _bodyoll: {fileID: 5810993732350848204}
+  _bodcoll: {fileID: 5810993732350848204}
 --- !u!1 &3862341973501394865
 GameObject:
   m_ObjectHideFlags: 0
