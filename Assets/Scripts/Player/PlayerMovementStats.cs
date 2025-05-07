@@ -31,13 +31,14 @@ public class PlayerMovementStats : ScriptableObject
 
     [Header("Jump")]
     public float JumpHeight = 6.5f;
-    [Range(1f,1.1f)] public float JumpheightCompensationFactor = 1.054f; 
+    [Range(1f,1.1f)] public float JumpHeightCompensationFactor = 1.054f; 
     public float TimeTillJumpApex = 0.35f;
     [Range(0.01f, 5f)] public float GravityOnReleaseMultiplier = 2f;
     public float MaxFallSpeed = 26f;
     [Range(1,5)] public int NumberOfJumpsAllowed = 2;
+    
     [Header("Reset Jump Option")]
-    public bool ResetJumpsOnWallSide=true;
+    public bool ResetJumpsOnWallSide = true;
 
     [Header("Jump Cut")]
     [Range(0.02f, 0.3f)] public float TimeForUpwardsCancel = 0.27f;
@@ -58,8 +59,8 @@ public class PlayerMovementStats : ScriptableObject
 
     [Header("Wall Jump")]
     public Vector2 WallJumpDirection= new Vector2(-20f,6.5f);
-    [Range(0f,1f)] public float WallJumpPostBufferTime =0.125f;
-    [Range(0.01f,5f)] public float WallJumpGravityOnReleaseMultiplier=1f;
+    [Range(0f,1f)] public float WallJumpPostBufferTime = 0.125f;
+    [Range(0.01f,5f)] public float WallJumpGravityOnReleaseMultiplier = 1f;
 
     [Header("Dash")]
     [Range(0f,1f)] public float DashTime =0.11f;
@@ -76,7 +77,7 @@ public class PlayerMovementStats : ScriptableObject
     [Header("Debug")]
     public bool DebugShowIsGroundedBox = false;
     public bool DebugShowHeadBumpBox= false;
-    public bool DebugShowWallHiotBox= false;
+    public bool DebugShowWallHitBox= false;
 
     [Header("Jump visualization tool")]
     public bool ShowWalkJumpArc = false;
@@ -99,12 +100,12 @@ public class PlayerMovementStats : ScriptableObject
     };
 
     public float Gravity{ get; private set; }
-    public float InitialjumpVelocity{ get; private set; }
-    public float AdjustedJumpheight{ get; private set; }
+    public float InitialJumpVelocity{ get; private set; }
+    public float AdjustedJumpHeight{ get; private set; }
 
     public float WallJumpGravity{ get; private set; }
-    public float InitialWalljumpVelocity{ get; private set; }
-    public float AdjustedWallJumpheight{ get; private set; }
+    public float InitialWallJumpVelocity{ get; private set; }
+    public float AdjustedWallJumpHeight{ get; private set; }
 
 
 
@@ -120,13 +121,13 @@ public class PlayerMovementStats : ScriptableObject
 
     private void CalculateValues()
     {    //jump
-        AdjustedJumpheight = JumpHeight * JumpheightCompensationFactor;
-        Gravity = -(2f * JumpHeight) / Mathf.Pow(TimeTillJumpApex, 2f);
-        InitialjumpVelocity = Mathf.Abs(Gravity) * TimeTillJumpApex;
+        AdjustedJumpHeight = JumpHeight * JumpHeightCompensationFactor;
+        Gravity = -(2f * AdjustedJumpHeight ) / Mathf.Pow(TimeTillJumpApex, 2f);
+        InitialJumpVelocity = Mathf.Abs(Gravity) * TimeTillJumpApex;
         // wall jump
-        AdjustedJumpheight = WallJumpDirection.y * JumpheightCompensationFactor;
-        WallJumpGravity = -(2f* AdjustedWallJumpheight) / Mathf.Pow(TimeTillJumpApex,2f);
-        InitialWalljumpVelocity =  Mathf.Abs(WallJumpGravity) *TimeTillJumpApex;
+        AdjustedWallJumpHeight = WallJumpDirection.y * JumpHeightCompensationFactor ;
+        WallJumpGravity = -(2f* AdjustedWallJumpHeight) / Mathf.Pow(TimeTillJumpApex,2f);
+        InitialWallJumpVelocity =  Mathf.Abs(WallJumpGravity) * TimeTillJumpApex;
 
 
     }

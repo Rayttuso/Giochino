@@ -106,7 +106,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 7f95db479b23b344cac06e658bbc60b2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42dbf20a40908542bc23390ece1757e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveStats: {fileID: 11400000, guid: 567812a896d55584bbdc56b79643643e, type: 2}
+  MoveStats: {fileID: 11400000, guid: 22ba6acaf42d1764889aef65b01ef367, type: 2}
   _feetColl: {fileID: 2959193296145092141}
   _bodcoll: {fileID: 5810993732350848204}
 --- !u!1 &3862341973501394865
