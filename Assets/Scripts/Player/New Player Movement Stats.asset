@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c96b2c8c242ba40a3ec2b18b7b0f81, type: 3}
   m_Name: New Player Movement Stats
   m_EditorClassIdentifier: 
+  canwalljump: 0
   MoveTheshold: 0.25
   MaxWalkSpeed: 12.5
   GroundAcceleration: 5
@@ -29,12 +30,12 @@ MonoBehaviour:
   HeadWidth: 0.75
   WallDetectionRayLength: 0.125
   WallDetectionRayHeightMultiplier: 0.9
-  JumpHeight: 3.5
+  JumpHeight: 5
   JumpHeightCompensationFactor: 1.1
   TimeTillJumpApex: 0.35
   GravityOnReleaseMultiplier: 2
   MaxFallSpeed: 26
-  NumberOfJumpsAllowed: 2
+  NumberOfJumpsAllowed: 5
   ResetJumpsOnWallSide: 1
   TimeForUpwardsCancel: 0.27
   ApexThreshold: 1

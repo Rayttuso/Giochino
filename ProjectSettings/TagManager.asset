@@ -8,6 +8,7 @@ TagManager:
   - Feet
   - Obstacle
   - Item
+  - Interactable
   layers:
   - Default
   - TransparentFX

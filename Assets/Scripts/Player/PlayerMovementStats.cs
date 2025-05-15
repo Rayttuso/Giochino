@@ -6,7 +6,10 @@ using UnityEngine;
 
 public class PlayerMovementStats : ScriptableObject
 {
+    [Header("CanWallJump")]
+    public bool canwalljump=false;
     [Header("Walk")]
+    
     [Range(0f, 1f)] public float MoveTheshold = 0.25f;
     [Range(1f,100f)] public float MaxWalkSpeed = 12.5f;
     [Range(0.25f,50f)] public float GroundAcceleration = 5f;

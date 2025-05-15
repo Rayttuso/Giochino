@@ -71,11 +71,14 @@
     <Compile Include="Assets\Scripts\Player\PlayerMovementStats.cs" />
     <Compile Include="Assets\Scripts\Player\PMove.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Testo1.cs" />
     <Compile Include="Assets\Scripts\Enviroment\Platforms.cs" />
     <Compile Include="Assets\Scripts\Death\Checkpoint.cs" />
     <Compile Include="Assets\Scripts\Enviroment\TextBoxManager.cs" />
     <Compile Include="Assets\Scripts\Input\InputManager.cs" />
+    <Compile Include="Assets\TimerScript.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerController.cs" />
+    <Compile Include="Assets\InteractionController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

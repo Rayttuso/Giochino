@@ -7,6 +7,8 @@ public class ObstaclesController : MonoBehaviour
     Vector3 checkpointPos;
     SpriteRenderer spriteRenderer;
 
+    [SerializeField] TimerScript timer;
+
     Rigidbody2D playerRb;
 
     private void Awake()
@@ -24,6 +26,7 @@ public class ObstaclesController : MonoBehaviour
     {
         if(collision.CompareTag("Obstacle")){
             Die();
+            
         }
     }
 
@@ -32,8 +35,9 @@ public class ObstaclesController : MonoBehaviour
         checkpointPos=pos;
     } 
 
-    void Die(){
+    public void Die(){
         StartCoroutine(Respawn(0.5f));
+        timer.remainingTime = 90;
     }
 
     IEnumerator Respawn(float duration){

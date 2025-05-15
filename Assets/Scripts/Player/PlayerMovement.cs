@@ -89,7 +89,10 @@ public class PlayerMoviment : MonoBehaviour
         JumpChecks();
         LandCheck();
         WallSlideCheck();
-        WallJumpCheck();
+        if(MoveStats.canwalljump){
+            WallJumpCheck();
+        }
+        
     }
 
     void FixedUpdate()
@@ -98,7 +101,10 @@ public class PlayerMoviment : MonoBehaviour
         Jump();
         Fall();
         WallSlide();
-        WallJump();
+        if(MoveStats.canwalljump){
+            WallJump();
+        }
+        
 
         if(_isGrounded)
         {
