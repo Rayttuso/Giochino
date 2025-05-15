@@ -30,17 +30,17 @@ MonoBehaviour:
   WallDetectionRayLength: 0.125
   WallDetectionRayHeightMultiplier: 0.9
   JumpHeight: 3.5
-  JumpHeightCompensationFactor: 1.054
+  JumpHeightCompensationFactor: 1.1
   TimeTillJumpApex: 0.35
   GravityOnReleaseMultiplier: 2
   MaxFallSpeed: 26
-  NumberOfJumpsAllowed: 1
+  NumberOfJumpsAllowed: 2
   ResetJumpsOnWallSide: 1
   TimeForUpwardsCancel: 0.27
-  ApexThreshold: 0.97
+  ApexThreshold: 1
   ApexHangTime: 0.01
   JumpBufferTime: 0.125
-  JumpCoyoteTime: 0.1
+  JumpCoyoteTime: 0
   WallSlideSpeed: 5
   WallSlideDecelerationSpeed: 50
   WallJumpDirection: {x: -20, y: 3.5}

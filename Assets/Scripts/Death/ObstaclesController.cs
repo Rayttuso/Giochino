@@ -38,7 +38,6 @@ public class ObstaclesController : MonoBehaviour
 
     IEnumerator Respawn(float duration){
         playerRb.simulated=false;
-        transform.Rotate(0, 0, 89);
         spriteRenderer.enabled=false;
         yield return new WaitForSeconds(duration);
         transform.position=checkpointPos;
