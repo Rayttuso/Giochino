@@ -8,6 +8,7 @@ public class PlayerMoviment : MonoBehaviour
     public PlayerMovementStats MoveStats;
     [SerializeField] private Collider2D _feetColl;
     [SerializeField] private Collider2D _bodcoll;
+    private Animator animator;
 
     #region Variables
 
@@ -81,6 +82,7 @@ public class PlayerMoviment : MonoBehaviour
     {
         _isFacingRight = true;
         _rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -92,7 +94,7 @@ public class PlayerMoviment : MonoBehaviour
         if(MoveStats.canwalljump){
             WallJumpCheck();
         }
-        
+        HandleAnimations(InputManager.Moviment);
     }
 
     void FixedUpdate()
@@ -104,25 +106,25 @@ public class PlayerMoviment : MonoBehaviour
         if(MoveStats.canwalljump){
             WallJump();
         }
-        
 
-        if(_isGrounded)
-        {
-            Move(MoveStats.GroundAcceleration, MoveStats.GroundDecelaration, InputManager.Moviment);
-        }
-        else{
-            //wall jumping
-            if(_useWallJumpMoveStats)
+        if (_isGrounded)
             {
-                Move(MoveStats.WallJumpMoveAcelaration, MoveStats.WallJumpMoveDecelaration, InputManager.Moviment);
+                Move(MoveStats.GroundAcceleration, MoveStats.GroundDecelaration, InputManager.Moviment);
             }
-
-            //airborne
             else
             {
-                Move(MoveStats.AirAcceleration, MoveStats.AirDecelaration, InputManager.Moviment);
+                //wall jumping
+                if (_useWallJumpMoveStats)
+                {
+                    Move(MoveStats.WallJumpMoveAcelaration, MoveStats.WallJumpMoveDecelaration, InputManager.Moviment);
+                }
+
+                //airborne
+                else
+                {
+                    Move(MoveStats.AirAcceleration, MoveStats.AirDecelaration, InputManager.Moviment);
+                }
             }
-        }
         ApplyVelocity();
     }
 
@@ -156,29 +158,42 @@ public class PlayerMoviment : MonoBehaviour
         }
     }
 
+    #region Animation
+
+    void HandleAnimations(Vector2 moveInput)
+    {
+        if (_isGrounded && Mathf.Abs(moveInput.x) >= MoveStats.MoveTheshold)
+        {
+            animator.Play("RunAnimation");
+        }
+    }
+
+    #endregion
+
     #region Moviment
 
     private void Move(float acceleration, float deceleration, Vector2 moveInput)
     {
-        if(!_isDashing)
-        {    
-            if(Mathf.Abs(moveInput.x) >= MoveStats.MoveTheshold)
+        if (!_isDashing)
+        {
+            if (Mathf.Abs(moveInput.x) >= MoveStats.MoveTheshold)
             {
                 TurnCheck(moveInput);
 
                 float targetVelocity = 0;
-                if(InputManager.RunIsHeld)
+                if (InputManager.RunIsHeld)
                 {
                     targetVelocity = moveInput.x * MoveStats.MaxRunSpeed;
 
-                }else
+                }
+                else
                 {
                     targetVelocity = moveInput.x * MoveStats.MaxWalkSpeed;
                 }
 
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
             }
-            else if(Mathf.Abs(moveInput.x) <= MoveStats.MoveTheshold)
+            else if (Mathf.Abs(moveInput.x) <= MoveStats.MoveTheshold)
             {
                 HorizontalVelocity = Mathf.Lerp(HorizontalVelocity, 0, deceleration * Time.fixedDeltaTime);
             }
@@ -341,7 +356,7 @@ public class PlayerMoviment : MonoBehaviour
 
 
     }
-
+ 
     private void InitiateJump(int numberOfJumpsUsed)
     {
         if(!_isJumping)
@@ -414,14 +429,14 @@ public class PlayerMoviment : MonoBehaviour
             }
             else if(VerticalVelocity < 0f)
             {
-                if(_isFalling)
+                if(!_isFalling)
                 {
                     _isFalling = true;
                 }
             }
         }
 
-        //JUMP CUT(Bounce if press jump before landing)
+        //JUMP CUT
         if(_isFastFalling)
         {
             if(_fastFallTime >= MoveStats.TimeForUpwardsCancel)
@@ -435,8 +450,6 @@ public class PlayerMoviment : MonoBehaviour
 
             _fastFallTime += Time.fixedDeltaTime;
         }
-
-        
 
     }
 
@@ -504,7 +517,7 @@ public class PlayerMoviment : MonoBehaviour
 
     private void WallJumpCheck()
     {
-        if(ShouldApplyWallJumpBuffer())
+        if(ShouldApplyPostWallJumpBuffer())
         {
             _wallJumpPostBufferTimer = MoveStats.WallJumpPostBufferTime;
         }
@@ -516,7 +529,7 @@ public class PlayerMoviment : MonoBehaviour
             {
                 if(_isPastWallJumpApexThreshold)
                 {
-                    _isPastApexThreshold = false;
+                    _isPastWallJumpApexThreshold = false;
                     _isWallJumpFastFalling = true;
                     _wallJumpFastFallTime = MoveStats.TimeForUpwardsCancel;
 
@@ -586,7 +599,7 @@ public class PlayerMoviment : MonoBehaviour
             if(VerticalVelocity >= 0f)
             {
                 //APEX CONTROLS
-                _wallJumpApexPoint = Mathf.InverseLerp(MoveStats.InitialWallJumpVelocity, 0f, VerticalVelocity);
+                _wallJumpApexPoint = Mathf.InverseLerp(MoveStats.WallJumpDirection.y, 0f, VerticalVelocity);
 
                 if(_wallJumpApexPoint > MoveStats.ApexThreshold)
                 {
@@ -640,11 +653,11 @@ public class PlayerMoviment : MonoBehaviour
         //HANDLE WALL JUMP CUT TIME
         if(_isWallJumpFastFalling)
         {
-            if(_wallJumpFastFallTime >= MoveStats.TimeTillJumpApex)
+            if(_wallJumpFastFallTime >= MoveStats.TimeForUpwardsCancel)
             {
                 VerticalVelocity += MoveStats.WallJumpGravity * MoveStats.WallJumpGravityOnReleaseMultiplier * Time.fixedDeltaTime;
             }
-            else if(_wallJumpFastFallTime < MoveStats.TimeTillJumpApex)
+            else if(_wallJumpFastFallTime < MoveStats.TimeForUpwardsCancel)
             {
                 VerticalVelocity = Mathf.Lerp(_wallJumpFastFallReleaseSpeed, 0f, (_wallJumpFastFallTime / MoveStats.TimeForUpwardsCancel));
             }
@@ -653,7 +666,7 @@ public class PlayerMoviment : MonoBehaviour
         }
     }
 
-    private bool ShouldApplyWallJumpBuffer()
+    private bool ShouldApplyPostWallJumpBuffer() 
     {
         if(!_isGrounded && (_isTouchingWall || _isWallSliding))
         {
@@ -899,7 +912,7 @@ public class PlayerMoviment : MonoBehaviour
         else{ _coyoteTimer = MoveStats.JumpCoyoteTime; }
 
         //wall jump buffer time
-        if(!ShouldApplyWallJumpBuffer())
+        if(!ShouldApplyPostWallJumpBuffer())
         {
             _wallJumpPostBufferTimer -= Time.deltaTime;
         }
