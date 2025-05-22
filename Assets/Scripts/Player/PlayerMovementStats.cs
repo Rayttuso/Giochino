@@ -24,6 +24,7 @@ public class PlayerMovementStats : ScriptableObject
 
     [Header("Grounded/Collision Checks")]
     public LayerMask GroundLayer;
+    public LayerMask PlatformLayer;
     public float GroundDetectionRayLenght = 0.02f;
     public float HeadDetectionRayLength = 0.02f;
     [Range(0f,1f)] public float HeadWidth = 0.75f;

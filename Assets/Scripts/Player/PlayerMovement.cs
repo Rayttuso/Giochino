@@ -26,6 +26,7 @@ public class PlayerMoviment : MonoBehaviour
     private RaycastHit2D _lastWallHit;
     
     private bool _isGrounded;
+    private bool _isOnPlatform;
     private bool _bumpedHead;
     private bool _isTouchingWall;
 
@@ -107,7 +108,7 @@ public class PlayerMoviment : MonoBehaviour
             WallJump();
         }
 
-        if (_isGrounded)
+        if (_isGrounded || _isOnPlatform)
             {
                 Move(MoveStats.GroundAcceleration, MoveStats.GroundDecelaration, InputManager.Moviment);
             }
@@ -162,7 +163,7 @@ public class PlayerMoviment : MonoBehaviour
 
     void HandleAnimations(Vector2 moveInput)
     {
-        if (_isGrounded && Mathf.Abs(moveInput.x) >= MoveStats.MoveTheshold)
+        if ((_isGrounded || _isOnPlatform) && Mathf.Abs(moveInput.x) >= MoveStats.MoveTheshold)
         {
             animator.Play("RunAnimation");
         }
@@ -238,7 +239,8 @@ public class PlayerMoviment : MonoBehaviour
     private void LandCheck()
     {
         //LANDED
-        if((_isJumping || _isFalling || _isWallJumpFalling || _isWallJumping || _isWallSlideFalling || _isWallSliding || _isDashFastFalling) && _isGrounded && VerticalVelocity <= 0f )
+        if((_isJumping || _isFalling || _isWallJumpFalling || _isWallJumping || _isWallSlideFalling || _isWallSliding || _isDashFastFalling)
+        && (_isGrounded || _isOnPlatform) && VerticalVelocity <= 0f )
         {   
             ResetJumpValues();
             StopWallSlide();
@@ -252,7 +254,7 @@ public class PlayerMoviment : MonoBehaviour
 
 
             //use in case of animations after dash that shuldnt be triggered while grouded
-            if(_isDashFastFalling && _isGrounded)
+            if(_isDashFastFalling && (_isGrounded || _isOnPlatform))
             {
                 return;
             }
@@ -262,7 +264,7 @@ public class PlayerMoviment : MonoBehaviour
     private void Fall()
     {
         //NORMAL GRAVITY WHILE FALLING
-        if (!_isGrounded && !_isJumping && !_isWallSliding && !_isWallJumping && !_isDashing && !_isDashFastFalling)
+        if (!_isGrounded && !_isOnPlatform && !_isJumping && !_isWallSliding && !_isWallJumping && !_isDashing && !_isDashFastFalling)
         {
             if (!_isFalling)
             {
@@ -271,7 +273,7 @@ public class PlayerMoviment : MonoBehaviour
 
             VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
         }
-        else if (_isGrounded && !_isJumping && !_isWallSliding && !_isWallJumping && !_isDashing && !_isDashFastFalling)
+        else if (!_isOnPlatform && _isGrounded && !_isJumping && !_isWallSliding && !_isWallJumping && !_isDashing && !_isDashFastFalling)
         {
             VerticalVelocity = 0;
         }
@@ -302,7 +304,7 @@ public class PlayerMoviment : MonoBehaviour
         {   
             if(_isWallSliding && _wallJumpPostBufferTimer >= 0)
             { return; }
-            else if(_isWallSliding || (_isTouchingWall && !_isGrounded))
+            else if(_isWallSliding || (_isTouchingWall && !_isGrounded && !_isOnPlatform ))
             { return; }
             _jumpBufferTime = MoveStats.JumpBufferTime;
             _jumpReleasedDuringBuffer = false;
@@ -333,7 +335,7 @@ public class PlayerMoviment : MonoBehaviour
             }
         }
         //INITIATE JUMP BUFFERING AND COYOTE TIME
-        if(_jumpBufferTime > 0f && !_isJumping && (_isGrounded || _coyoteTimer > 0f))
+        if(_jumpBufferTime > 0f && !_isJumping && ((_isGrounded || _isOnPlatform) || _coyoteTimer > 0f))
         {   //IF PRESS JUMP WHILE ON GROUND OR WHILE WITHIN COYOTE TIME JUMP
             InitiateJump(1);
 
@@ -468,7 +470,7 @@ public class PlayerMoviment : MonoBehaviour
 
     private void WallSlideCheck()
     {
-        if(_isTouchingWall && !_isGrounded && !_isDashing)
+        if(_isTouchingWall && !_isGrounded && !_isOnPlatform && !_isDashing)
         {
             if(VerticalVelocity < 0f && !_isWallSliding)
             {
@@ -490,7 +492,7 @@ public class PlayerMoviment : MonoBehaviour
             }
         }
 
-        else if(_isWallSliding && !_isTouchingWall && !_isGrounded && !_isWallSlideFalling)
+        else if(_isWallSliding && !_isTouchingWall && !_isGrounded && !_isOnPlatform && !_isWallSlideFalling)
         {
             _isWallJumpFalling = true;
             StopWallSlide();
@@ -677,7 +679,7 @@ public class PlayerMoviment : MonoBehaviour
 
     private bool ShouldApplyPostWallJumpBuffer() 
     {
-        if(!_isGrounded && (_isTouchingWall || _isWallSliding))
+        if(!_isGrounded && !_isOnPlatform && (_isTouchingWall || _isWallSliding))
         {
             return true;
         }
@@ -802,7 +804,7 @@ public class PlayerMoviment : MonoBehaviour
         if(MoveStats.DebugShowIsGroundedBox)
         {
             Color rayColor;
-            if(_isGrounded)
+            if(_isGrounded || _isOnPlatform)
             {
                 rayColor = Color.green;
             }else{ rayColor = Color.red;}
@@ -815,36 +817,51 @@ public class PlayerMoviment : MonoBehaviour
         #endregion
     }
 
+    private void IsOnPlatform()
+    { 
+        Vector2 boxCastOrigin = new Vector2(_feetColl.bounds.center.x, _feetColl.bounds.min.y);
+        Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x, MoveStats.GroundDetectionRayLenght);
+
+        _groundHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.down, MoveStats.GroundDetectionRayLenght, MoveStats.PlatformLayer);
+        if(_groundHit.collider != null)
+        {
+            _isOnPlatform = true;
+        }
+        else
+        {
+            _isOnPlatform = false;
+        }
+    }
     private void BumpedHead()
     {
         Vector2 boxCastOrigin = new Vector2(_feetColl.bounds.center.x, _bodcoll.bounds.max.y);
         Vector2 boxCastSize = new Vector2(_feetColl.bounds.size.x * MoveStats.HeadWidth, MoveStats.HeadDetectionRayLength);
-    
+
         _headHit = Physics2D.BoxCast(boxCastOrigin, boxCastSize, 0f, Vector2.up, MoveStats.HeadDetectionRayLength, MoveStats.GroundLayer);
-        if(_headHit.collider != null)
+        if (_headHit.collider != null)
         {
             _bumpedHead = true;
         }
-        else{ _bumpedHead = false; }
+        else { _bumpedHead = false; }
 
         #region  Debug Visualization
 
-        if(MoveStats.DebugShowHeadBumpBox)
+        if (MoveStats.DebugShowHeadBumpBox)
         {
             float HeadWidth = MoveStats.HeadWidth;
 
             Color rayColor;
-            if(_bumpedHead)
+            if (_bumpedHead)
             {
                 rayColor = Color.green;
             }
-            else{ rayColor = Color.red; }
+            else { rayColor = Color.red; }
 
-            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * HeadWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLength, rayColor );
-            Debug.DrawRay(new Vector2(boxCastOrigin.x + (boxCastSize.x / 2) * HeadWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLength, rayColor );
-            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * HeadWidth, boxCastOrigin.y + MoveStats.HeadDetectionRayLength), Vector2.right * boxCastSize.x * HeadWidth, rayColor );
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * HeadWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLength, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x + (boxCastSize.x / 2) * HeadWidth, boxCastOrigin.y), Vector2.up * MoveStats.HeadDetectionRayLength, rayColor);
+            Debug.DrawRay(new Vector2(boxCastOrigin.x - boxCastSize.x / 2 * HeadWidth, boxCastOrigin.y + MoveStats.HeadDetectionRayLength), Vector2.right * boxCastSize.x * HeadWidth, rayColor);
         }
-        
+
         #endregion
     }
 
@@ -901,6 +918,7 @@ public class PlayerMoviment : MonoBehaviour
     private void CollisionChecks()
     {
         IsGrounded();
+        IsOnPlatform();
         BumpedHead();
         IsTuchingWall();
     }
@@ -914,7 +932,7 @@ public class PlayerMoviment : MonoBehaviour
         _jumpBufferTime -= Time.deltaTime;
 
         //Cayote time
-        if(!_isGrounded)
+        if(!_isGrounded && !_isOnPlatform)
         {
             _coyoteTimer -= Time.deltaTime;
         }
