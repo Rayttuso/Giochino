@@ -166,6 +166,11 @@ public class PlayerMoviment : MonoBehaviour
         {
             animator.Play("RunAnimation");
         }
+        else if (_isJumping)
+        {
+            animator.Play("JumpAnimation");
+        }
+        else { animator.Play("IdleAnimation"); }
     }
 
     #endregion
@@ -252,19 +257,23 @@ public class PlayerMoviment : MonoBehaviour
                 return;
             }
         }
-    } 
-    
+    }
+
     private void Fall()
     {
         //NORMAL GRAVITY WHILE FALLING
-        if(!_isGrounded && !_isJumping && !_isWallSliding && !_isWallJumping && !_isDashing && !_isDashFastFalling)
+        if (!_isGrounded && !_isJumping && !_isWallSliding && !_isWallJumping && !_isDashing && !_isDashFastFalling)
         {
-            if(!_isFalling)
+            if (!_isFalling)
             {
                 _isFalling = true;
             }
 
             VerticalVelocity += MoveStats.Gravity * Time.fixedDeltaTime;
+        }
+        else if (_isGrounded && !_isJumping && !_isWallSliding && !_isWallJumping && !_isDashing && !_isDashFastFalling)
+        {
+            VerticalVelocity = 0;
         }
     }
 
