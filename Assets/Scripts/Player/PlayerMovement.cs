@@ -102,8 +102,9 @@ public class PlayerMoviment : MonoBehaviour
         CollisionChecks();
         Jump();
         Fall();
-        WallSlide();
+        
         if(MoveStats.canwalljump){
+            WallSlide();
             WallJump();
         }
 

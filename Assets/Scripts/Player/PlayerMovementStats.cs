@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerMovementStats : ScriptableObject
 {
     [Header("CanWallJump")]
-    public bool canwalljump=false;
+    public bool canwalljump=true;
     [Header("Walk")]
     
     [Range(0f, 1f)] public float MoveTheshold = 0.25f;

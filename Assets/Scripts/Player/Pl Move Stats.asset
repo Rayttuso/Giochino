@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c96b2c8c242ba40a3ec2b18b7b0f81, type: 3}
   m_Name: Pl Move Stats
   m_EditorClassIdentifier: 
-  canwalljump: 1
+  canwalljump: 0
   MoveTheshold: 0.25
   MaxWalkSpeed: 12.5
   GroundAcceleration: 5

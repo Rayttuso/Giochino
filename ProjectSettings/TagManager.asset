@@ -8,7 +8,7 @@ TagManager:
   - Feet
   - Obstacle
   - Item
-  - Interactable
+  - WallJump
   layers:
   - Default
   - TransparentFX
