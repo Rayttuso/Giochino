@@ -90,8 +90,8 @@ public class PlayerMoviment : MonoBehaviour
         CountTimers();
         JumpChecks();
         LandCheck();
-        WallSlideCheck();
         if(MoveStats.canwalljump){
+            WallSlideCheck();
             WallJumpCheck();
         }
         HandleAnimations(InputManager.Moviment);
