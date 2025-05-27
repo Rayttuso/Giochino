@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1c96b2c8c242ba40a3ec2b18b7b0f81, type: 3}
   m_Name: Pl Move Stats
   m_EditorClassIdentifier: 
-  canwalljump: 0
+  canwalljump: 1
   MoveTheshold: 0.25
   MaxWalkSpeed: 12.5
   GroundAcceleration: 5
@@ -35,13 +35,13 @@ MonoBehaviour:
   TimeTillJumpApex: 0.6
   GravityOnReleaseMultiplier: 2
   MaxFallSpeed: 26
-  NumberOfJumpsAllowed: 1
+  NumberOfJumpsAllowed: 2
   ResetJumpsOnWallSide: 1
   TimeForUpwardsCancel: 0.02
   ApexThreshold: 1
   ApexHangTime: 0.01
   JumpBufferTime: 0.125
-  JumpCoyoteTime: 0
+  JumpCoyoteTime: 0.05
   WallSlideSpeed: 5
   WallSlideDecelerationSpeed: 50
   WallJumpDirection: {x: -20, y: 3.5}

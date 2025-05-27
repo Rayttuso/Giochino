@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InteractionController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public NewScriptableObjectScript testo;
 
     public TextMeshProUGUI textBox;
@@ -17,6 +16,7 @@ public class InteractionController : MonoBehaviour
         if(collision.CompareTag("Player")){
             textBox.text = testo.testo;
             textBox.enabled = true;
+            Destroy(gameObject);
             WaitForDisappear();
   
         }

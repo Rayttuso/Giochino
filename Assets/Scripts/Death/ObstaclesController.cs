@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class ObstaclesController : MonoBehaviour
 {
+
+    public PlayerMovementStats Movement;
     Vector3 checkpointPos;
     SpriteRenderer spriteRenderer;
 

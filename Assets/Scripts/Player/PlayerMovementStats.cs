@@ -38,7 +38,7 @@ public class PlayerMovementStats : ScriptableObject
     public float TimeTillJumpApex = 0.35f;
     [Range(0.01f, 5f)] public float GravityOnReleaseMultiplier = 2f;
     public float MaxFallSpeed = 26f;
-    [Range(1,5)] public int NumberOfJumpsAllowed = 2;
+    [Range(1,2)] public int NumberOfJumpsAllowed = 1;
     
     [Header("Reset Jump Option")]
     public bool ResetJumpsOnWallSide = true;
@@ -112,6 +112,11 @@ public class PlayerMovementStats : ScriptableObject
 
 
 
+    private void Start()
+    {
+        Debug.Log("Entrato nello start");
+        NumberOfJumpsAllowed = 1;
+    }
     private void OnValidate()
     {
         CalculateValues();

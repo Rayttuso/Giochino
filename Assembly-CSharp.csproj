@@ -65,6 +65,7 @@
     <Analyzer Include="C:\Users\Rayttuso\Desktop\Rjc soft\6000.0.42f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\StartMenuController.cs" />
     <Compile Include="Assets\Scripts\Interactions\ChangeScenes.cs" />
     <Compile Include="Assets\Scripts\Death\ObstaclesController.cs" />
     <Compile Include="Assets\Scripts\Saves\DontDestroyOnLoad.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Assets\Testo1.cs" />
     <Compile Include="Assets\Scripts\Enviroment\Platforms.cs" />
     <Compile Include="Assets\Scripts\Death\Checkpoint.cs" />
+    <Compile Include="Assets\Scripts\Player\PowerUps.cs" />
     <Compile Include="Assets\Scripts\Enviroment\TextBoxManager.cs" />
     <Compile Include="Assets\Scripts\Input\InputManager.cs" />
     <Compile Include="Assets\TimerScript.cs" />

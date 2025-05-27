@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e25736ff840300c4f81ad79bd8529a42
+guid: bbb3402cb849c3a4da09b75ee34d2633
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8970401582574262418
-    second: TitleScreenSfondo_0
+      213: 766334725215574998
+    second: sfondo2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TitleScreenSfondo_0
+      name: sfondo2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 5400
-        height: 4320
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 298d0fd46b44d7c70800000000000000
-      internalID: 8970401582574262418
+      spriteID: 6db55835f5192aa00800000000000000
+      internalID: 766334725215574998
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6e69a2a8a0f74d047b4a54920c7ed558
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      TitleScreenSfondo_0: 8970401582574262418
+      sfondo2_0: 766334725215574998
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
