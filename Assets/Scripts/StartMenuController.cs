@@ -3,9 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class StartMenuController : MonoBehaviour
 {
+
+    public string scene;
     public void OnStartClick()
     {
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene(scene);
     }
 
     public void OnExitClick()

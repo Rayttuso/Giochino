@@ -9,6 +9,8 @@ public class ObstaclesController : MonoBehaviour
     Vector3 checkpointPos;
     SpriteRenderer spriteRenderer;
 
+    AudioManager gameOverSFX;
+
     [SerializeField] TimerScript timer;
 
     Rigidbody2D playerRb;
@@ -35,11 +37,20 @@ public class ObstaclesController : MonoBehaviour
     public void UpdateCheckpoint(Vector3 pos)
     {
         checkpointPos=pos;
-    } 
+    }
 
-    public void Die(){
+    public void Die()
+    {
         StartCoroutine(Respawn(0.5f));
         timer.remainingTime = 90;
+        DeathAudio();
+        
+        
+    }
+
+    public void DeathAudio()
+    { 
+        gameOverSFX.PlaySFX(gameOverSFX.game_over);   
     }
 
     IEnumerator Respawn(float duration){

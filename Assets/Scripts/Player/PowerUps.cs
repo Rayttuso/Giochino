@@ -10,6 +10,11 @@ public class PowerUps : MonoBehaviour
         {
             Movement.NumberOfJumpsAllowed = 2;
         }
+
+        else if (collision.gameObject.tag == "Player" && this.gameObject.tag == "WallJump")
+        {
+            Movement.canwalljump = true;
+        }
     }
 }
 
