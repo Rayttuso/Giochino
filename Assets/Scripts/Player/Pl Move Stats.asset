@@ -28,7 +28,7 @@ MonoBehaviour:
   PlatformLayer:
     serializedVersion: 2
     m_Bits: 512
-  GroundDetectionRayLenght: 0.1
+  GroundDetectionRayLenght: 0.02
   HeadDetectionRayLength: 0.02
   HeadWidth: 0.75
   WallDetectionRayLength: 0.125
@@ -36,7 +36,7 @@ MonoBehaviour:
   JumpHeight: 5
   JumpHeightCompensationFactor: 1.1
   TimeTillJumpApex: 0.45
-  GravityOnReleaseMultiplier: 2
+  GravityOnReleaseMultiplier: 0.6
   MaxFallSpeed: 26
   NumberOfJumpsAllowed: 2
   ResetJumpsOnWallSide: 1
