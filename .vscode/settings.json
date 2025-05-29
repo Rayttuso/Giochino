@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "[NOME PLACEHOLDER].sln"
+    "dotnet.defaultSolution": "Giochino.sln"
 }
