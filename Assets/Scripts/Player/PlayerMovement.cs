@@ -236,7 +236,6 @@ public class PlayerMoviment : MonoBehaviour
 
     #region Land/Fall
 
-
     private void LandCheck()
     {
         //LANDED
@@ -283,7 +282,6 @@ public class PlayerMoviment : MonoBehaviour
     #endregion
 
     #region Jump
-
     private void ResetJumpValues()
     {
         _isJumping = false;
@@ -501,6 +499,7 @@ public class PlayerMoviment : MonoBehaviour
 
         else
         {
+            _isWallSlideFalling = true;
             StopWallSlide();
         }
     }
